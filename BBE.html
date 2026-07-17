@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Holy Bible Online</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fcfbf9;
+            color: #2c3e50;
+            padding-top: 70px; /* Prevents text from being hidden behind fixed header */
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .return-btn {
+            background-color: #b8860b;
+            color: white;
+            text-decoration: none;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-right: 1.5rem;
+            transition: background 0.3s;
+        }
+
+        .return-btn:hover {
+            background-color: #966f0a;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+        }
+
+        /* Container holds the entire loaded text */
+        .bible-text-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Single p tag for the entire script file contents */
+        #bible-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            white-space: pre-wrap; /* Maintains line breaks from the .txt file */
+            text-align: justify;
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="return-btn">Return</a>
+        <h1>The Holy Bible BBE</h1>
+    </header>
+
+    <div class="bible-text-container">
+        <p id="bible-text">Loading the Holy Scriptures...</p>
+    </div>
+
+    <script>
+        // Name of your text file in the same folder
+        const textFileName = 'BBE.txt'; 
+
+        // Fetch the file contents and inject them into the <p> tag
+        fetch(textFileName)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Could not find ' + textFileName);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('bible-text').textContent = data;
+            })
+            .catch(error => {
+                document.getElementById('bible-text').className = 'error-message';
+                document.getElementById('bible-text').textContent = 
+                    'Error loading text file. Please ensure "' + textFileName + '" can be found.';
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
